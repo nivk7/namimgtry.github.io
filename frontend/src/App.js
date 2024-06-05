@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
   const [number, setNumber] = useState('');
@@ -7,6 +8,9 @@ function App() {
   const [items, setItems] = useState([]);
   const [challengeStarted, setChallengeStarted] = useState(false);
   const [itemInput, setItemInput] = useState('');
+  const [timerStarted, setTimerStarted] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
 
   const startChallenge = (e) => {
     e.preventDefault();
@@ -18,20 +22,26 @@ function App() {
   };
 
   const handleItemInput = (e) => {
+    if (!timerStarted) {
+      setTimerStarted(true);
+      setStartTime(Date.now());
+    }
+
     if (e.key === 'Enter' && itemInput.trim()) {
       setItems([...items, itemInput]);
       setItemInput('');
       if (items.length + 1 >= number) {
-        alert('Challenge Completed!');
+        setEndTime(Date.now());
         axios.post('http://localhost:3000/api/save-challenge', {
-        number,
-        category,
-        items: [...items, itemInput]
-      }).then(response => {
-        alert('Challenge Completed and Saved!');
-      }).catch(error => {
-        console.error('There was an error saving the challenge!', error);
-      });
+          number,
+          category,
+          items: [...items, itemInput],
+          timeTaken: Date.now() - startTime,
+        }).then(response => {
+          alert(`Challenge Completed in ${(Date.now() - startTime) / 1000} seconds!`);
+        }).catch(error => {
+          console.error('There was an error saving the challenge!', error);
+        });
       }
     }
   };
