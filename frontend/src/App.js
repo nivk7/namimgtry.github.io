@@ -23,6 +23,15 @@ function App() {
       setItemInput('');
       if (items.length + 1 >= number) {
         alert('Challenge Completed!');
+        axios.post('http://localhost:3000/api/save-challenge', {
+        number,
+        category,
+        items: [...items, itemInput]
+      }).then(response => {
+        alert('Challenge Completed and Saved!');
+      }).catch(error => {
+        console.error('There was an error saving the challenge!', error);
+      });
       }
     }
   };
