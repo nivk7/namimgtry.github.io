@@ -1,0 +1,25 @@
+.App {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+form {
+  margin: 20px 0;
+}
+
+label, input, button {
+  display: block;
+  margin: 10px 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background: #f0f0f0;
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 5px;
+}
